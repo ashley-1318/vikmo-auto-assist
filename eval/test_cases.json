@@ -1,0 +1,297 @@
+[
+  {
+    "id": "TC-001",
+    "category": "Product Search",
+    "input": "Show me brake pads available in stock",
+    "expected_behavior": "Returns list of brake pads from catalogue with stock info",
+    "expected_tool": null,
+    "expected_rag": true,
+    "expected_in_response": ["brake", "stock", "₹"],
+    "out_of_scope": false
+  },
+  {
+    "id": "TC-002",
+    "category": "Product Search",
+    "input": "I need engine oil for my bike",
+    "expected_behavior": "Asks which bike model or returns general engine oil options",
+    "expected_tool": null,
+    "expected_rag": true,
+    "expected_in_response": ["engine oil", "Motul"],
+    "out_of_scope": false
+  },
+  {
+    "id": "TC-003",
+    "category": "Product Search",
+    "input": "Find spark plugs",
+    "expected_behavior": "Returns NGK and Bosch spark plug options from catalogue",
+    "expected_tool": null,
+    "expected_rag": true,
+    "expected_in_response": ["NGK", "Bosch", "spark plug"],
+    "out_of_scope": false
+  },
+  {
+    "id": "TC-004",
+    "category": "Product Search",
+    "input": "What tyres do you have?",
+    "expected_behavior": "Returns available tyre options with prices",
+    "expected_tool": null,
+    "expected_rag": true,
+    "expected_in_response": ["tyre", "MRF", "₹"],
+    "out_of_scope": false
+  },
+  {
+    "id": "TC-005",
+    "category": "Product Search",
+    "input": "Show Brembo brake calipers",
+    "expected_behavior": "Returns Brembo products from catalogue",
+    "expected_tool": null,
+    "expected_rag": true,
+    "expected_in_response": ["Brembo"],
+    "out_of_scope": false
+  },
+  {
+    "id": "TC-006",
+    "category": "Vehicle Fitment",
+    "input": "What parts are available for KTM Duke 390?",
+    "expected_behavior": "Calls find_parts_by_vehicle tool with KTM Duke 390",
+    "expected_tool": "find_parts_by_vehicle",
+    "expected_tool_args": {"vehicle_name": "KTM Duke 390"},
+    "expected_rag": true,
+    "expected_in_response": ["KTM", "Duke", "390"],
+    "out_of_scope": false
+  },
+  {
+    "id": "TC-007",
+    "category": "Vehicle Fitment",
+    "input": "Show compatible parts for Royal Enfield Meteor 350",
+    "expected_behavior": "Calls find_parts_by_vehicle for Royal Enfield Meteor 350",
+    "expected_tool": "find_parts_by_vehicle",
+    "expected_tool_args": {"vehicle_name": "Royal Enfield Meteor 350"},
+    "expected_rag": true,
+    "expected_in_response": ["Royal Enfield", "Meteor"],
+    "out_of_scope": false
+  },
+  {
+    "id": "TC-008",
+    "category": "Vehicle Fitment",
+    "input": "I need tyres for Yamaha R15 V4",
+    "expected_behavior": "Calls find_parts_by_vehicle or searches RAG for Yamaha R15 V4 tyres",
+    "expected_tool": "find_parts_by_vehicle",
+    "expected_tool_args": {"vehicle_name": "Yamaha R15 V4"},
+    "expected_rag": true,
+    "expected_in_response": ["Yamaha", "R15", "tyre"],
+    "out_of_scope": false
+  },
+  {
+    "id": "TC-009",
+    "category": "Vehicle Fitment",
+    "input": "What brake pads fit a Bajaj Pulsar NS200?",
+    "expected_behavior": "Returns brake pads compatible with Bajaj Pulsar NS200",
+    "expected_tool": "find_parts_by_vehicle",
+    "expected_rag": true,
+    "expected_in_response": ["Pulsar", "brake"],
+    "out_of_scope": false
+  },
+  {
+    "id": "TC-010",
+    "category": "Vehicle Fitment",
+    "input": "Parts for Honda CBR650R",
+    "expected_behavior": "Lists all compatible parts for Honda CBR650R",
+    "expected_tool": "find_parts_by_vehicle",
+    "expected_rag": true,
+    "expected_in_response": ["Honda", "CBR650R"],
+    "out_of_scope": false
+  },
+  {
+    "id": "TC-011",
+    "category": "Stock Check",
+    "input": "Check stock for BRK-1003",
+    "expected_behavior": "Calls check_stock tool with SKU BRK-1003, returns stock=15",
+    "expected_tool": "check_stock",
+    "expected_tool_args": {"sku": "BRK-1003"},
+    "expected_rag": false,
+    "expected_in_response": ["BRK-1003", "15"],
+    "out_of_scope": false
+  },
+  {
+    "id": "TC-012",
+    "category": "Stock Check",
+    "input": "Is TYR-2001 available?",
+    "expected_behavior": "Calls check_stock for TYR-2001, returns available: true, stock=60",
+    "expected_tool": "check_stock",
+    "expected_tool_args": {"sku": "TYR-2001"},
+    "expected_rag": false,
+    "expected_in_response": ["TYR-2001", "60"],
+    "out_of_scope": false
+  },
+  {
+    "id": "TC-013",
+    "category": "Stock Check",
+    "input": "How many units of BRK-1007 do you have?",
+    "expected_behavior": "Calls check_stock for BRK-1007, returns stock=5 with low stock warning",
+    "expected_tool": "check_stock",
+    "expected_tool_args": {"sku": "BRK-1007"},
+    "expected_rag": false,
+    "expected_in_response": ["BRK-1007", "5"],
+    "out_of_scope": false
+  },
+  {
+    "id": "TC-014",
+    "category": "Stock Check",
+    "input": "Check if SUS-4004 is in stock",
+    "expected_behavior": "Checks Ohlins shock, returns low stock (4 units)",
+    "expected_tool": "check_stock",
+    "expected_tool_args": {"sku": "SUS-4004"},
+    "expected_rag": false,
+    "expected_in_response": ["SUS-4004", "4"],
+    "out_of_scope": false
+  },
+  {
+    "id": "TC-015",
+    "category": "Stock Check",
+    "input": "What's the stock for ENG-3001?",
+    "expected_behavior": "Returns stock=200 for Motul engine oil",
+    "expected_tool": "check_stock",
+    "expected_tool_args": {"sku": "ENG-3001"},
+    "expected_rag": false,
+    "expected_in_response": ["ENG-3001", "200"],
+    "out_of_scope": false
+  },
+  {
+    "id": "TC-016",
+    "category": "Order Creation",
+    "input": "Place an order for 5 units of BRK-1001 for ABC Motors",
+    "expected_behavior": "Calls create_order with dealer_name=ABC Motors, items=[{sku:BRK-1001, quantity:5}]",
+    "expected_tool": "create_order",
+    "expected_tool_args": {"dealer_name": "ABC Motors", "items": [{"sku": "BRK-1001", "quantity": 5}]},
+    "expected_rag": false,
+    "expected_in_response": ["ORD", "CONFIRMED", "ABC Motors"],
+    "out_of_scope": false
+  },
+  {
+    "id": "TC-017",
+    "category": "Order Creation",
+    "input": "Order 10 units of TYR-2001 and 2 units of BRK-1003 for Speed Zone Dealers",
+    "expected_behavior": "Creates multi-item order for Speed Zone Dealers",
+    "expected_tool": "create_order",
+    "expected_rag": false,
+    "expected_in_response": ["ORD", "CONFIRMED", "Speed Zone"],
+    "out_of_scope": false
+  },
+  {
+    "id": "TC-018",
+    "category": "Order Creation",
+    "input": "I want to buy 3 ENG-3002 for Moto Hub",
+    "expected_behavior": "Creates order for 3 units of ENG-3002",
+    "expected_tool": "create_order",
+    "expected_rag": false,
+    "expected_in_response": ["ORD", "Moto Hub"],
+    "out_of_scope": false
+  },
+  {
+    "id": "TC-019",
+    "category": "Ambiguous Queries",
+    "input": "I need tyres",
+    "expected_behavior": "Asks which vehicle model the user needs tyres for",
+    "expected_tool": null,
+    "expected_rag": false,
+    "expected_in_response": ["vehicle", "model"],
+    "out_of_scope": false
+  },
+  {
+    "id": "TC-020",
+    "category": "Ambiguous Queries",
+    "input": "Order some brake pads",
+    "expected_behavior": "Asks for dealer name, vehicle/SKU, and quantity before placing order",
+    "expected_tool": null,
+    "expected_rag": false,
+    "expected_in_response": ["which", "dealer", "model"],
+    "out_of_scope": false
+  },
+  {
+    "id": "TC-021",
+    "category": "Ambiguous Queries",
+    "input": "Check stock",
+    "expected_behavior": "Asks which SKU to check if no context; or checks last-mentioned SKU from memory",
+    "expected_tool": null,
+    "expected_rag": false,
+    "expected_in_response": ["SKU", "which"],
+    "out_of_scope": false
+  },
+  {
+    "id": "TC-022",
+    "category": "Multi-turn Context",
+    "turns": [
+      {"role": "user", "content": "Show brake pads for KTM Duke 200"},
+      {"role": "user", "content": "Check stock"}
+    ],
+    "expected_behavior": "Second turn checks stock of brake pads shown in first turn without re-asking",
+    "expected_tool": "check_stock",
+    "expected_rag": true,
+    "expected_in_response": ["stock", "BRK"],
+    "out_of_scope": false
+  },
+  {
+    "id": "TC-023",
+    "category": "Multi-turn Context",
+    "turns": [
+      {"role": "user", "content": "Find parts for Royal Enfield Himalayan"},
+      {"role": "user", "content": "What tyres are available for it?"}
+    ],
+    "expected_behavior": "Second turn understands 'it' = Royal Enfield Himalayan",
+    "expected_tool": "find_parts_by_vehicle",
+    "expected_rag": true,
+    "expected_in_response": ["Himalayan", "tyre"],
+    "out_of_scope": false
+  },
+  {
+    "id": "TC-024",
+    "category": "Out-of-Scope Requests",
+    "input": "What is the weather today?",
+    "expected_behavior": "Refuses and redirects to automotive domain",
+    "expected_tool": null,
+    "expected_rag": false,
+    "expected_in_response": ["only assist", "automotive"],
+    "out_of_scope": true
+  },
+  {
+    "id": "TC-025",
+    "category": "Out-of-Scope Requests",
+    "input": "Who won the IPL 2024?",
+    "expected_behavior": "Refuses and redirects to automotive domain",
+    "expected_tool": null,
+    "expected_rag": false,
+    "expected_in_response": ["only assist", "automotive"],
+    "out_of_scope": true
+  },
+  {
+    "id": "TC-026",
+    "category": "Out-of-Scope Requests",
+    "input": "Write me a Python script to sort a list",
+    "expected_behavior": "Refuses and redirects to automotive domain",
+    "expected_tool": null,
+    "expected_rag": false,
+    "expected_in_response": ["only assist", "automotive"],
+    "out_of_scope": true
+  },
+  {
+    "id": "TC-027",
+    "category": "Out-of-Scope Requests",
+    "input": "What is the capital of France?",
+    "expected_behavior": "Refuses and redirects to automotive domain",
+    "expected_tool": null,
+    "expected_rag": false,
+    "expected_in_response": ["only assist", "automotive"],
+    "out_of_scope": true
+  },
+  {
+    "id": "TC-028",
+    "category": "Product Search",
+    "input": "Show me products from Pirelli",
+    "expected_behavior": "Returns Pirelli tyres from catalogue",
+    "expected_tool": null,
+    "expected_rag": true,
+    "expected_in_response": ["Pirelli"],
+    "out_of_scope": false
+  }
+]

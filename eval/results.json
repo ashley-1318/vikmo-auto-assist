@@ -1,0 +1,860 @@
+{
+  "timestamp": "2026-06-22T14:12:45.244651Z",
+  "summary": {
+    "total_tests": 28,
+    "passed": 19,
+    "failed": 9,
+    "overall_pass_rate": 0.68
+  },
+  "aggregate_metrics": {
+    "tool_call_accuracy": 0.85,
+    "grounding_accuracy": 1.0,
+    "response_quality": 0.69,
+    "order_validation_accuracy": 0.67,
+    "out_of_scope_rejection_rate": 1.0
+  },
+  "category_breakdown": {
+    "Product Search": {
+      "pass_rate": 0.17,
+      "passed": 1,
+      "total": 6
+    },
+    "Vehicle Fitment": {
+      "pass_rate": 1.0,
+      "passed": 5,
+      "total": 5
+    },
+    "Stock Check": {
+      "pass_rate": 0.6,
+      "passed": 3,
+      "total": 5
+    },
+    "Order Creation": {
+      "pass_rate": 0.67,
+      "passed": 2,
+      "total": 3
+    },
+    "Ambiguous Queries": {
+      "pass_rate": 1.0,
+      "passed": 3,
+      "total": 3
+    },
+    "Out-of-Scope Requests": {
+      "pass_rate": 1.0,
+      "passed": 4,
+      "total": 4
+    },
+    "Multi-turn Context": {
+      "pass_rate": 0.5,
+      "passed": 1,
+      "total": 2
+    }
+  },
+  "test_results": [
+    {
+      "id": "TC-001",
+      "category": "Product Search",
+      "passed": false,
+      "error": "Error code: 400 - {'error': {'message': \"Failed to call a function. Please adjust your prompt. See 'failed_generation' for more details.\", 'type': 'invalid_request_error', 'code': 'tool_use_failed', 'failed_generation': '<function=find_parts_by_vehicle {\"vehicle_name\": \"Bajaj Pulsar NS200\"}</function>\\n'}}"
+    },
+    {
+      "id": "TC-002",
+      "category": "Product Search",
+      "input": "I need engine oil for my bike",
+      "response_preview": "I can help you with that. To find the right engine oil for your bike, could you please tell me the model of your vehicle? This will help me provide you with the most compatible options.",
+      "passed": true,
+      "metrics": {
+        "response_accuracy": 0.5,
+        "term_checks": {
+          "engine oil": true,
+          "Motul": false
+        },
+        "tool_accuracy": {
+          "expected": "none",
+          "called": [],
+          "correct": true,
+          "note": "Correctly used no tool"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": false
+        },
+        "out_of_scope_handled": null,
+        "order_valid": null,
+        "tools_called_count": 0,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-003",
+      "category": "Product Search",
+      "input": "Find spark plugs",
+      "response_preview": "For the Bajaj Pulsar 150, a compatible spark plug is the Spark Plug Standard (ENG-3006) by Bosch, priced at \u20b9120. It is in stock with 300 units available.",
+      "passed": false,
+      "metrics": {
+        "response_accuracy": 0.67,
+        "term_checks": {
+          "NGK": false,
+          "Bosch": true,
+          "spark plug": true
+        },
+        "tool_accuracy": {
+          "expected": "none",
+          "called": [
+            "find_parts_by_vehicle",
+            "find_parts_by_vehicle",
+            "check_stock"
+          ],
+          "correct": false,
+          "note": "Unexpected tool call"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": true
+        },
+        "out_of_scope_handled": null,
+        "order_valid": null,
+        "tools_called_count": 3,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-004",
+      "category": "Product Search",
+      "input": "What tyres do you have?",
+      "response_preview": "I could not find matching catalogue information. Please provide a vehicle model to find compatible parts.",
+      "passed": false,
+      "metrics": {
+        "response_accuracy": 0.0,
+        "term_checks": {
+          "tyre": false,
+          "MRF": false,
+          "\u00e2\u201a\u00b9": false
+        },
+        "tool_accuracy": {
+          "expected": "none",
+          "called": [
+            "find_parts_by_vehicle"
+          ],
+          "correct": false,
+          "note": "Unexpected tool call"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": false
+        },
+        "out_of_scope_handled": null,
+        "order_valid": null,
+        "tools_called_count": 1,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-005",
+      "category": "Product Search",
+      "input": "Show Brembo brake calipers",
+      "response_preview": "I could not find matching catalogue information.",
+      "passed": false,
+      "metrics": {
+        "response_accuracy": 0.0,
+        "term_checks": {
+          "Brembo": false
+        },
+        "tool_accuracy": {
+          "expected": "none",
+          "called": [],
+          "correct": true,
+          "note": "Correctly used no tool"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": false
+        },
+        "out_of_scope_handled": null,
+        "order_valid": null,
+        "tools_called_count": 0,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-006",
+      "category": "Vehicle Fitment",
+      "input": "What parts are available for KTM Duke 390?",
+      "response_preview": "The following parts are available for KTM Duke 390:\n\n1. Rear Disc Brake Pad Set (EBC) - \u20b92,100, 30 in stock\n2. Rear Tyre 140/70-17 (Apollo) - \u20b92,800, 40 in stock\n3. Spark Plug Iridium (NGK) - \u20b9480, 22",
+      "passed": true,
+      "metrics": {
+        "response_accuracy": 1.0,
+        "term_checks": {
+          "KTM": true,
+          "Duke": true,
+          "390": true
+        },
+        "tool_accuracy": {
+          "expected": "find_parts_by_vehicle",
+          "called": [
+            "find_parts_by_vehicle"
+          ],
+          "correct": true,
+          "note": "Expected find_parts_by_vehicle, got ['find_parts_by_vehicle']"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": false
+        },
+        "out_of_scope_handled": null,
+        "order_valid": null,
+        "tools_called_count": 1,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-007",
+      "category": "Vehicle Fitment",
+      "input": "Show compatible parts for Royal Enfield Meteor 350",
+      "response_preview": "Here are the compatible parts for the Royal Enfield Meteor 350:\n\n1. Brake Caliper Assembly (BRK-1004) - \u20b93,200, 8 units in stock (Low Stock)\n2. Chain and Sprocket Kit (CHN-6003) - \u20b93,200, 30 units in ",
+      "passed": true,
+      "metrics": {
+        "response_accuracy": 1.0,
+        "term_checks": {
+          "Royal Enfield": true,
+          "Meteor": true
+        },
+        "tool_accuracy": {
+          "expected": "find_parts_by_vehicle",
+          "called": [
+            "find_parts_by_vehicle"
+          ],
+          "correct": true,
+          "note": "Expected find_parts_by_vehicle, got ['find_parts_by_vehicle']"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": true
+        },
+        "out_of_scope_handled": null,
+        "order_valid": null,
+        "tools_called_count": 1,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-008",
+      "category": "Vehicle Fitment",
+      "input": "I need tyres for Yamaha R15 V4",
+      "response_preview": "For the Yamaha R15 V4, the following tyres are available:\n- Front Tyre 110/70-17 (SKU: TYR-2001, \u20b93,200, 60 units in stock)\n- Rear Tyre 150/60-17 (SKU: TYR-2002, \u20b93,800, 55 units in stock)",
+      "passed": true,
+      "metrics": {
+        "response_accuracy": 1.0,
+        "term_checks": {
+          "Yamaha": true,
+          "R15": true,
+          "tyre": true
+        },
+        "tool_accuracy": {
+          "expected": "find_parts_by_vehicle",
+          "called": [
+            "find_parts_by_vehicle"
+          ],
+          "correct": true,
+          "note": "Expected find_parts_by_vehicle, got ['find_parts_by_vehicle']"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": false
+        },
+        "out_of_scope_handled": null,
+        "order_valid": null,
+        "tools_called_count": 1,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-009",
+      "category": "Vehicle Fitment",
+      "input": "What brake pads fit a Bajaj Pulsar NS200?",
+      "response_preview": "The Bajaj Pulsar NS200 is compatible with the following brake pads:\n\n- Front Disc Brake Pad Set (SKU: BRK-1003) by Bosch, priced at \u20b91,450 with 15 units in stock. \n\nPlease note that the stock levels a",
+      "passed": true,
+      "metrics": {
+        "response_accuracy": 1.0,
+        "term_checks": {
+          "Pulsar": true,
+          "brake": true
+        },
+        "tool_accuracy": {
+          "expected": "find_parts_by_vehicle",
+          "called": [
+            "find_parts_by_vehicle"
+          ],
+          "correct": true,
+          "note": "Expected find_parts_by_vehicle, got ['find_parts_by_vehicle']"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": true
+        },
+        "out_of_scope_handled": null,
+        "order_valid": null,
+        "tools_called_count": 1,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-010",
+      "category": "Vehicle Fitment",
+      "input": "Parts for Honda CBR650R",
+      "response_preview": "For the Honda CBR650R, the following parts are available:\n\n1. Front Disc Brake Pad Set (BRK-1001) - \u20b92,850, 45 units in stock\n2. Rear Tyre 150/60-17 (TYR-2002) - \u20b93,800, 55 units in stock\n3. Rear Shoc",
+      "passed": true,
+      "metrics": {
+        "response_accuracy": 1.0,
+        "term_checks": {
+          "Honda": true,
+          "CBR650R": true
+        },
+        "tool_accuracy": {
+          "expected": "find_parts_by_vehicle",
+          "called": [
+            "find_parts_by_vehicle"
+          ],
+          "correct": true,
+          "note": "Expected find_parts_by_vehicle, got ['find_parts_by_vehicle']"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": true
+        },
+        "out_of_scope_handled": null,
+        "order_valid": null,
+        "tools_called_count": 1,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-011",
+      "category": "Stock Check",
+      "input": "Check stock for BRK-1003",
+      "response_preview": "I could not find matching catalogue information.",
+      "passed": false,
+      "metrics": {
+        "response_accuracy": 0.0,
+        "term_checks": {
+          "BRK-1003": false,
+          "15": false
+        },
+        "tool_accuracy": {
+          "expected": "check_stock",
+          "called": [
+            "check_stock"
+          ],
+          "correct": true,
+          "note": "Expected check_stock, got ['check_stock']"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": false
+        },
+        "out_of_scope_handled": null,
+        "order_valid": null,
+        "tools_called_count": 1,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-012",
+      "category": "Stock Check",
+      "input": "Is TYR-2001 available?",
+      "response_preview": "The Front Tyre 110/70-17 (TYR-2001) is available, with 60 units in stock. The price is \u20b93,200.",
+      "passed": true,
+      "metrics": {
+        "response_accuracy": 1.0,
+        "term_checks": {
+          "TYR-2001": true,
+          "60": true
+        },
+        "tool_accuracy": {
+          "expected": "check_stock",
+          "called": [
+            "check_stock"
+          ],
+          "correct": true,
+          "note": "Expected check_stock, got ['check_stock']"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": true
+        },
+        "out_of_scope_handled": null,
+        "order_valid": null,
+        "tools_called_count": 1,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-013",
+      "category": "Stock Check",
+      "input": "How many units of BRK-1007 do you have?",
+      "response_preview": "We have 5 units of BRK-1007 in stock. This is a low stock warning.",
+      "passed": true,
+      "metrics": {
+        "response_accuracy": 1.0,
+        "term_checks": {
+          "BRK-1007": true,
+          "5": true
+        },
+        "tool_accuracy": {
+          "expected": "check_stock",
+          "called": [
+            "check_stock"
+          ],
+          "correct": true,
+          "note": "Expected check_stock, got ['check_stock']"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": true
+        },
+        "out_of_scope_handled": null,
+        "order_valid": null,
+        "tools_called_count": 1,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-014",
+      "category": "Stock Check",
+      "input": "Check if SUS-4004 is in stock",
+      "response_preview": "The Rear Shock Absorber Premium (SUS-4004) is in stock with 4 units available. However, this is a low stock warning as there are 4 units or less in stock.",
+      "passed": true,
+      "metrics": {
+        "response_accuracy": 1.0,
+        "term_checks": {
+          "SUS-4004": true,
+          "4": true
+        },
+        "tool_accuracy": {
+          "expected": "check_stock",
+          "called": [
+            "check_stock"
+          ],
+          "correct": true,
+          "note": "Expected check_stock, got ['check_stock']"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": true
+        },
+        "out_of_scope_handled": null,
+        "order_valid": null,
+        "tools_called_count": 1,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-015",
+      "category": "Stock Check",
+      "input": "What's the stock for ENG-3001?",
+      "response_preview": "I could not find matching catalogue information.",
+      "passed": false,
+      "metrics": {
+        "response_accuracy": 0.0,
+        "term_checks": {
+          "ENG-3001": false,
+          "200": false
+        },
+        "tool_accuracy": {
+          "expected": "check_stock",
+          "called": [],
+          "correct": false,
+          "note": "Expected check_stock, got []"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": false
+        },
+        "out_of_scope_handled": null,
+        "order_valid": null,
+        "tools_called_count": 0,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-016",
+      "category": "Order Creation",
+      "input": "Place an order for 5 units of BRK-1001 for ABC Motors",
+      "response_preview": "Order ORD1001 has been successfully placed for ABC Motors, with 5 units of Front Disc Brake Pad Set (BRK-1001) at \u20b914,250.00. The current stock of BRK-1001 is 40 units.",
+      "passed": true,
+      "metrics": {
+        "response_accuracy": 0.67,
+        "term_checks": {
+          "ORD": true,
+          "CONFIRMED": false,
+          "ABC Motors": true
+        },
+        "tool_accuracy": {
+          "expected": "create_order",
+          "called": [
+            "create_order",
+            "check_stock"
+          ],
+          "correct": true,
+          "note": "Expected create_order, got ['create_order', 'check_stock']"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": true
+        },
+        "out_of_scope_handled": null,
+        "order_valid": true,
+        "tools_called_count": 2,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-017",
+      "category": "Order Creation",
+      "input": "Order 10 units of TYR-2001 and 2 units of BRK-1003 for Speed Zone Dealers",
+      "response_preview": "Order ORD1002 confirmed for Speed Zone Dealers. \n\nFor the order, 10 units of TYR-2001 (Front Tyre 110/70-17) at \u20b93,200 each and 2 units of BRK-1003 (Front Disc Brake Pad Set) at \u20b91,450 each have been ",
+      "passed": true,
+      "metrics": {
+        "response_accuracy": 1.0,
+        "term_checks": {
+          "ORD": true,
+          "CONFIRMED": true,
+          "Speed Zone": true
+        },
+        "tool_accuracy": {
+          "expected": "create_order",
+          "called": [
+            "create_order",
+            "check_stock",
+            "check_stock"
+          ],
+          "correct": true,
+          "note": "Expected create_order, got ['create_order', 'check_stock', 'check_stock']"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": true
+        },
+        "out_of_scope_handled": null,
+        "order_valid": true,
+        "tools_called_count": 3,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-018",
+      "category": "Order Creation",
+      "input": "I want to buy 3 ENG-3002 for Moto Hub",
+      "response_preview": "I could not find matching catalogue information.",
+      "passed": false,
+      "metrics": {
+        "response_accuracy": 0.0,
+        "term_checks": {
+          "ORD": false,
+          "Moto Hub": false
+        },
+        "tool_accuracy": {
+          "expected": "create_order",
+          "called": [],
+          "correct": false,
+          "note": "Expected create_order, got []"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": false
+        },
+        "out_of_scope_handled": null,
+        "order_valid": false,
+        "tools_called_count": 0,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-019",
+      "category": "Ambiguous Queries",
+      "input": "I need tyres",
+      "response_preview": "I can help you with that. To find the right tyres for your vehicle, could you please tell me what model of vehicle you have? This will help me provide you with a list of compatible tyres.",
+      "passed": true,
+      "metrics": {
+        "response_accuracy": 1.0,
+        "term_checks": {
+          "vehicle": true,
+          "model": true
+        },
+        "tool_accuracy": {
+          "expected": "none",
+          "called": [],
+          "correct": true,
+          "note": "Correctly used no tool"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": false
+        },
+        "out_of_scope_handled": null,
+        "order_valid": null,
+        "tools_called_count": 0,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-020",
+      "category": "Ambiguous Queries",
+      "input": "Order some brake pads",
+      "response_preview": "I can only assist with automotive parts, inventory, vehicle fitment and dealer orders. To find the correct brake pads, I need to know the vehicle model. Can you please provide the vehicle model you ar",
+      "passed": true,
+      "metrics": {
+        "response_accuracy": 0.67,
+        "term_checks": {
+          "which": false,
+          "dealer": true,
+          "model": true
+        },
+        "tool_accuracy": {
+          "expected": "none",
+          "called": [],
+          "correct": true,
+          "note": "Correctly used no tool"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": false
+        },
+        "out_of_scope_handled": null,
+        "order_valid": null,
+        "tools_called_count": 0,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-021",
+      "category": "Ambiguous Queries",
+      "input": "Check stock",
+      "response_preview": "I need to know the specific SKU of the product you'd like to check the stock for. Could you please provide the SKU?",
+      "passed": true,
+      "metrics": {
+        "response_accuracy": 0.5,
+        "term_checks": {
+          "SKU": true,
+          "which": false
+        },
+        "tool_accuracy": {
+          "expected": "none",
+          "called": [],
+          "correct": true,
+          "note": "Correctly used no tool"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": false
+        },
+        "out_of_scope_handled": null,
+        "order_valid": null,
+        "tools_called_count": 0,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-024",
+      "category": "Out-of-Scope Requests",
+      "input": "What is the weather today?",
+      "response_preview": "I can only assist with automotive parts, inventory, vehicle fitment and dealer orders.",
+      "passed": true,
+      "metrics": {
+        "response_accuracy": 1.0,
+        "term_checks": {
+          "only assist": true,
+          "automotive": true
+        },
+        "tool_accuracy": {
+          "expected": "none",
+          "called": [],
+          "correct": true,
+          "note": "Correctly used no tool"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": false
+        },
+        "out_of_scope_handled": true,
+        "order_valid": null,
+        "tools_called_count": 0,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-025",
+      "category": "Out-of-Scope Requests",
+      "input": "Who won the IPL 2024?",
+      "response_preview": "I can only assist with automotive parts, inventory, vehicle fitment and dealer orders.",
+      "passed": true,
+      "metrics": {
+        "response_accuracy": 1.0,
+        "term_checks": {
+          "only assist": true,
+          "automotive": true
+        },
+        "tool_accuracy": {
+          "expected": "none",
+          "called": [],
+          "correct": true,
+          "note": "Correctly used no tool"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": false
+        },
+        "out_of_scope_handled": true,
+        "order_valid": null,
+        "tools_called_count": 0,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-026",
+      "category": "Out-of-Scope Requests",
+      "input": "Write me a Python script to sort a list",
+      "response_preview": "I can only assist with automotive parts, inventory, vehicle fitment and dealer orders.",
+      "passed": true,
+      "metrics": {
+        "response_accuracy": 1.0,
+        "term_checks": {
+          "only assist": true,
+          "automotive": true
+        },
+        "tool_accuracy": {
+          "expected": "none",
+          "called": [],
+          "correct": true,
+          "note": "Correctly used no tool"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": false
+        },
+        "out_of_scope_handled": true,
+        "order_valid": null,
+        "tools_called_count": 0,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-027",
+      "category": "Out-of-Scope Requests",
+      "input": "What is the capital of France?",
+      "response_preview": "I can only assist with automotive parts, inventory, vehicle fitment and dealer orders.",
+      "passed": true,
+      "metrics": {
+        "response_accuracy": 1.0,
+        "term_checks": {
+          "only assist": true,
+          "automotive": true
+        },
+        "tool_accuracy": {
+          "expected": "none",
+          "called": [],
+          "correct": true,
+          "note": "Correctly used no tool"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": false
+        },
+        "out_of_scope_handled": true,
+        "order_valid": null,
+        "tools_called_count": 0,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-028",
+      "category": "Product Search",
+      "input": "Show me products from Pirelli",
+      "response_preview": "I could not find a function to directly list products by brand. However, I can try to find products compatible with a specific vehicle or check the stock of a specific SKU. If you mention a vehicle mo",
+      "passed": false,
+      "metrics": {
+        "response_accuracy": 0.0,
+        "term_checks": {
+          "Pirelli": false
+        },
+        "tool_accuracy": {
+          "expected": "none",
+          "called": [],
+          "correct": true,
+          "note": "Correctly used no tool"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": false
+        },
+        "out_of_scope_handled": null,
+        "order_valid": null,
+        "tools_called_count": 0,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-022",
+      "category": "Multi-turn Context",
+      "input": "Check stock",
+      "response_preview": "I could not find matching catalogue information for brake pads for KTM Duke 200. However, I found a Brake Master Cylinder (BRK-1007) which is compatible with KTM Duke 200. It is available in stock wit",
+      "passed": true,
+      "metrics": {
+        "response_accuracy": 1.0,
+        "term_checks": {
+          "stock": true,
+          "BRK": true
+        },
+        "tool_accuracy": {
+          "expected": "check_stock",
+          "called": [
+            "check_stock",
+            "check_stock"
+          ],
+          "correct": true,
+          "note": "Expected check_stock, got ['check_stock', 'check_stock']"
+        },
+        "grounding": {
+          "grounded": true,
+          "hallucination_markers_detected": false,
+          "references_tool_data": true
+        },
+        "out_of_scope_handled": null,
+        "order_valid": null,
+        "tools_called_count": 2,
+        "products_retrieved": 5
+      }
+    },
+    {
+      "id": "TC-023",
+      "category": "Multi-turn Context",
+      "passed": false,
+      "error": "Request timed out."
+    }
+  ]
+}
